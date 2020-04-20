@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "89854577981",
+    "firebase_url": "https://proximity-chat-32843.firebaseio.com",
+    "project_id": "proximity-chat-32843",
+    "storage_bucket": "proximity-chat-32843.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:89854577981:android:d76eece9013ce146f38954",
+        "android_client_info": {
+          "package_name": "com.example.proximitychat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "89854577981-siarb96m59a629fkr0p2sdafmnopapcf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiWalVzvpQq0AM2hnOJ_2rTJYVG5le410"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "89854577981-siarb96m59a629fkr0p2sdafmnopapcf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">Proximity Chat</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="WiFiDirectBroadcastReceiver">WifiDirectBroadcastReceiver</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_WifiDirect">WiFiDirectActivity</string>
+    <string name="test_string">Test</string>
+    <string name="title_activity_message_screen">MessageScreen</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_wi_fi_direct">WiFiDirectActivity</string>
+    <string name="title_activity_base">BaseActivity</string>
+    <string name="title_activity_email_password">EmailPasswordActivity</string>
+    <string name="create_user_inf">Creating an account is easy! All you need is a unique e-mail address and a trusty password.</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="create_account">Create Account</string>
+    <string name="e_mail_address">E-mail Address</string>
+    <string name="confirm_e_mail_address">Confirm E-Mail Address</string>
+    <string name="login">Login</string>
+    <string name="password_length_error">Password must be at least 8 characters long.</string>
+    <string name="password_special_error">Password must contain a special character.</string>
+    <string name="password_upper_error">Password must contain an upper case letter.</string>
+    <string name="password_lower_error">Password must contain a lower case letter.</string>
+    <string name="password_digit_error">Password must contain a digit.</string>
+    <string name="email_confirm_error">Email Address and Confirm Email Address must be the same.</string>
+    <string name="password_must_contain_a_letter">Password must contain a letter</string>
+    <string name="email_length_error">Email Addresses must be at least 3 characeters.</string>
+    <string name="email_max_length_error">Email Address is too long.</string>
+    <string name="username_must_contain_a_letter">Username must contain a letter</string>
+    <string name="password_confirm_error">Password and Confirm Password must match.</string>
+    <string name="log_in_to_proximity_chat">Log in to Proximity Chat</string>
+    <string name="login_failed">Login failed.</string>
+    <string name="title_activity_edit_display_details">edit_display_details</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="edit_profile_text">You can change your profile once a day, so make sure everything looks right before you save it!</string>
+    <string name="hint_display_name">e.g. Cheeseballs18</string>
+    <string name="text_display_name">Display Name</string>
+    <string name="text_bio">Bio</string>
+    <string name="bio_hint">Write something interesting about yourself!</string>
+    <string name="save_changes">Save Changes</string>
+
+
+</resources>

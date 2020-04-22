@@ -14,11 +14,11 @@ import android.widget.Toast;
 public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
     private WifiP2pManager manager;
     private Channel channel;
-    private proximityChatActivity activity;
+    private proto_proximity_chat activity;
 
 
     public WiFiDirectBroadcastReceiver(WifiP2pManager manager, Channel channel,
-                                       proximityChatActivity activity) {
+                                       proto_proximity_chat activity) {
         super();
         this.manager = manager;
         this.channel = channel;

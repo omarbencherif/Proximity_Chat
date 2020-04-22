@@ -39,13 +39,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-public class proximityChatActivity extends AppCompatActivity {
+public class proto_proximity_chat extends AppCompatActivity implements CardAdapter.ItemClickListener {
 
     Button btnOnOff, btnDiscover, btnSend;
     ListView listView;
     TextView read_msg_box, connectionStatus;
     EditText writeMsg;
+    CardAdapter adapter;
+    RecyclerView recyclerView;
 
     WifiManager wifiManager;
     WifiP2pManager mManager;
@@ -55,7 +59,7 @@ public class proximityChatActivity extends AppCompatActivity {
     IntentFilter mIntentFilter;
 
     List<WifiP2pDevice> peers = new ArrayList<WifiP2pDevice>();
-    String[] deviceNameArray;
+    List<String> deviceNameArray;
     WifiP2pDevice[] deviceArray;
 
     static final int MESSAGE_READ = 1;
@@ -69,15 +73,21 @@ public class proximityChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setContentView(R.layout.activity_proto_proximity_chat);
+        recyclerView = findViewById(R.id.peerRecyclerView);
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             // User is signed in
+
         } else {
             // No user is signed in
         }
 
         request_Coarse_Location();
-        setContentView(R.layout.activity_proximity_chat);
         initialWork();
         exqListener();
     }
@@ -121,7 +131,7 @@ public class proximityChatActivity extends AppCompatActivity {
 
             }
         });
-
+        // -------------------------------------------------------------------------------------------------------
         // Allows the user to discover other devices
         btnDiscover.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,26 +151,7 @@ public class proximityChatActivity extends AppCompatActivity {
                 });
             }
         });
-        // -------------------------------------------------------------------------------------------------------
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                final WifiP2pDevice device = deviceArray[i];
-                WifiP2pConfig config = new WifiP2pConfig();
-                config.deviceAddress = device.deviceAddress;
-                mManager.connect(mChannel, config, new WifiP2pManager.ActionListener() {
-                    @Override
-                    public void onSuccess() {
-                        Toast.makeText(getApplicationContext(), "Connected to" + device.deviceName, Toast.LENGTH_SHORT).show();
-                    }
 
-                    @Override
-                    public void onFailure(int reason) {
-                        Toast.makeText(getApplicationContext(), " Not Connected", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
         // Sends the message to the other device
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,7 +167,7 @@ public class proximityChatActivity extends AppCompatActivity {
         btnDiscover = findViewById(R.id.discover);
         btnSend = findViewById(R.id.sendButton);
 
-        listView = findViewById(R.id.peerListView);
+        recyclerView = findViewById(R.id.peerRecyclerView);
 
         read_msg_box = findViewById(R.id.readMsg);
 
@@ -190,9 +181,8 @@ public class proximityChatActivity extends AppCompatActivity {
 
         mChannel = mManager.initialize(this, getMainLooper(), null);
 
-        // IMPORTANT________________________________________________________________________________
-        //mReceiver = new WiFiDirectBroadcastReceiver(mManager, mChannel, this);
-        // _________________________________________________________________________________________
+        mReceiver = new WiFiDirectBroadcastReceiver(mManager, mChannel, this);
+
         mIntentFilter = new IntentFilter();
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
@@ -200,34 +190,47 @@ public class proximityChatActivity extends AppCompatActivity {
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
 
     }
-
     // Manages the peer list
+    // _________________________________________________________________________________________________________________________
+
+
     WifiP2pManager.PeerListListener peerListListener = new WifiP2pManager.PeerListListener() {
         @Override
         public void onPeersAvailable(WifiP2pDeviceList peerList) {
+            //If device list has changed
             if (!peerList.getDeviceList().equals(peers)) {
                 peers.clear();
                 peers.addAll(peerList.getDeviceList());
+                // Updates the peer list
 
-                deviceNameArray = new String[peerList.getDeviceList().size()];
+                // Makes arrays of both user's names and device names
+                deviceNameArray = new ArrayList<String>();
                 deviceArray = new WifiP2pDevice[peerList.getDeviceList().size()];
 
                 int index = 0;
 
+                // Each device's ID and its name are appended to separate lists.
                 for (WifiP2pDevice device : peerList.getDeviceList()) {
-                    deviceNameArray[index] = device.deviceName;
+                    deviceNameArray.add(device.deviceName);
+                    for (int i = 0; i < 6; i++) {
+                        deviceNameArray.add(String.format("%d Test Device", i));
+                    }
+                    deviceNameArray.add("2 Test Device");
                     deviceArray[index] = device;
                     index++;
                 }
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, deviceNameArray);
-                listView.setAdapter(adapter);
+                //CardAdapter adapter = new CardAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, deviceNameArray);
+                //listView.setAdapter(adapter);
+
 
             }
+            adapter = new CardAdapter(proto_proximity_chat.this, deviceNameArray);
+            adapter.setClickListener(proto_proximity_chat.this);
+            recyclerView.setAdapter(adapter);
 
         }
     };
-
 
     WifiP2pManager.ConnectionInfoListener connectionInfoListener = new WifiP2pManager.ConnectionInfoListener() {
         @Override
@@ -260,6 +263,11 @@ public class proximityChatActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         unregisterReceiver(mReceiver);
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
     }
 
     public class ServerClass extends Thread {
@@ -339,7 +347,7 @@ public class proximityChatActivity extends AppCompatActivity {
             int timeout = 500;
             try {
                 socket.connect(new InetSocketAddress(hostAdd, 8888), timeout);
-                        sendReceive = new SendReceive(socket);
+                sendReceive = new SendReceive(socket);
                 sendReceive.start();
             } catch (IOException e) {
                 e.printStackTrace();

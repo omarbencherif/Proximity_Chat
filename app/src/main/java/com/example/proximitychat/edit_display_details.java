@@ -38,6 +38,7 @@ public class edit_display_details extends AppCompatActivity {
     EditText edit_bio;
     Button saveChanges;
     Bitmap uploadPhoto;
+    String uploadPhotoPath;
 
 
     @Override
@@ -76,8 +77,9 @@ public class edit_display_details extends AppCompatActivity {
 
 
                     // Creates a URI from the image's path
-                    Uri file = getImageUri(getApplicationContext(), uploadPhoto);
-                    StorageReference picRef = storageRef.child("images/" + file.getLastPathSegment());
+                    Uri file = Uri.fromFile(new File(uploadPhotoPath));
+                    String filename = file.getLastPathSegment();
+                    StorageReference picRef = storageRef.child(user.getUid());
                     // Uploads the file
                     UploadTask uploadTask = picRef.putFile(file);
 
@@ -122,6 +124,7 @@ public class edit_display_details extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         // Assigns data to the uploadPhoto variable
         uploadPhoto = ImagePicker.getImageFromResult(this, requestCode, resultCode, data);
+        uploadPhotoPath = ImagePicker.getImagePathFromResult(this, requestCode, resultCode, data);
         edit_display_photo.setImageBitmap(uploadPhoto);
 
     }
